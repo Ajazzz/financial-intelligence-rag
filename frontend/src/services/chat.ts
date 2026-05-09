@@ -113,8 +113,9 @@ export async function getConversation(
   };
 }
 
-export async function deleteConversation():
-Promise<void> {
+export async function deleteConversation(
+  _id: string
+): Promise<void> {
 
   return;
 }
