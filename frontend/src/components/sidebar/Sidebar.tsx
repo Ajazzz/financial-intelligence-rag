@@ -76,7 +76,7 @@ export function Sidebar({
         <div className="flex items-center gap-2.5">
           <Brain size={20} className="text-emerald-400" />
           <div>
-            <div className="text-sm font-semibold text-slate-100 leading-tight">Contract Intelligence</div>
+            <div className="text-sm font-semibold text-slate-100 leading-tight">Financial Intelligence RAG</div>
             <div className="text-[10px] font-mono text-emerald-500 tracking-wider uppercase">AI · Enterprise</div>
           </div>
         </div>
