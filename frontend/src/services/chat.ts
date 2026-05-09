@@ -1,11 +1,19 @@
 import request from './api';
-import type { ChatRequest, ChatResponse, Conversation } from '../types';
+import type { ChatRequest, ChatResponse } from '../types';
 
-export async function sendMessage(payload: ChatRequest): Promise<ChatResponse> {
-  return request<ChatResponse>('/api/chat', {
-    method: 'POST',
-    body: JSON.stringify(payload),
-  });
+export async function sendMessage(
+  payload: ChatRequest
+): Promise<ChatResponse> {
+
+  return request<ChatResponse>(
+    '/api/query',
+    {
+      method: 'POST',
+      body: JSON.stringify({
+        query: payload.query
+      }),
+    }
+  );
 }
 
 export async function streamMessage(
@@ -14,63 +22,47 @@ export async function streamMessage(
   onDone: (meta: Omit<ChatResponse, 'answer'>) => void,
   signal?: AbortSignal
 ): Promise<void> {
-  const API_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
 
-  const res = await fetch(`${API_URL}/api/chat/stream`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    signal,
-  });
+  const API_URL =
+    import.meta.env.VITE_API_URL ??
+    'http://localhost:8000';
 
-  if (!res.ok || !res.body) {
-    throw new Error(`Stream failed: ${res.status} ${res.statusText}`);
-  }
-
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buffer = '';
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-
-    buffer += decoder.decode(value, { stream: true });
-    const lines = buffer.split('\n');
-    buffer = lines.pop() ?? '';
-
-    for (const line of lines) {
-      if (!line.startsWith('data: ')) continue;
-      const data = line.slice(6).trim();
-      if (data === '[DONE]') continue;
-
-      try {
-        const parsed = JSON.parse(data) as {
-          type: 'token' | 'meta';
-          content?: string;
-          meta?: Omit<ChatResponse, 'answer'>;
-        };
-
-        if (parsed.type === 'token' && parsed.content) {
-          onChunk(parsed.content);
-        } else if (parsed.type === 'meta' && parsed.meta) {
-          onDone(parsed.meta);
-        }
-      } catch {
-        // malformed SSE chunk — skip
-      }
+  const res = await fetch(
+    `${API_URL}/api/query`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        query: payload.query
+      }),
+      signal,
     }
+  );
+
+  if (!res.ok) {
+
+    throw new Error(
+      `Request failed: ${res.status}`
+    );
+
   }
-}
 
-export async function listConversations(): Promise<Conversation[]> {
-  return request<Conversation[]>('/api/conversations');
-}
+  const data = await res.json();
 
-export async function getConversation(id: string): Promise<Conversation & { messages: unknown[] }> {
-  return request(`/api/conversations/${id}`);
-}
+  const answer =
+    data.answer ??
+    data.response ??
+    JSON.stringify(data);
 
-export async function deleteConversation(id: string): Promise<void> {
-  await request(`/api/conversations/${id}`, { method: 'DELETE' });
+  onChunk(answer);
+
+  onDone({
+    tokensUsed: 0,
+    sources: data.sources ?? [],
+    confidenceScore: 1,
+    retrievalDebug: data.retrieval_debug ?? {},
+    queryAnalysis: data.query_analysis ?? {},
+  });
 }
