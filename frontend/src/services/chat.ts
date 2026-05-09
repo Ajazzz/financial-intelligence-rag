@@ -79,10 +79,10 @@ export async function streamMessage(
     confidenceScore: 1,
 
     retrievalDebug:
-      data.retrieval_debug ?? {},
+    data.retrievalDebug ?? {},
 
     queryAnalysis:
-      data.query_analysis ?? {},
+    data.queryAnalysis ?? {},
   });
 }
 
