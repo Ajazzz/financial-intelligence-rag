@@ -116,9 +116,9 @@ function EmptyState({ onPrompt }: { onPrompt: (p: string) => void }) {
         <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-4">
           <Brain size={22} className="text-emerald-400" />
         </div>
-        <h2 className="text-base font-semibold text-slate-200 mb-1">Contract Intelligence AI</h2>
+        <h2 className="text-base font-semibold text-slate-200 mb-1">Financial Intelligence RAG</h2>
         <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-          Enterprise retrieval system for industrial contracts, procurement agreements, and operational documents.
+          Hybrid Retrieval + Reranking system for grounded financial intelligence and enterprise AI search.
         </p>
       </div>
 
