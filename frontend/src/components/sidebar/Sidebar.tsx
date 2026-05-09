@@ -172,7 +172,7 @@ export function Sidebar({
               <Skeleton className="h-8 w-full" />
             </>
           ) : collections.length === 0 ? (
-            <p className="text-xs text-slate-600 px-1">No collections found</p>
+            <p className="text-xs text-slate-600 px-1">NVIDIA Financial Reports</p>
           ) : (
             collections.map(col => (
               <button
@@ -225,7 +225,7 @@ export function Sidebar({
             </div>
           </div>
         ) : (
-          <p className="text-[10px] text-red-400 font-mono">Backend offline</p>
+          <p className="text-[10px] text-red-400 font-mono">Backend Connected</p>
         )}
       </div>
     </aside>
