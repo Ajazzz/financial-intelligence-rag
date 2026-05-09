@@ -87,7 +87,7 @@ export async function streamMessage(
 }
 
 //
-// KEEP THESE FOR EXISTING UI
+// Conversation placeholders
 //
 
 export async function listConversations():
@@ -103,14 +103,15 @@ export async function getConversation(
 > {
 
   return {
-  id: 'temp',
-  title: 'Conversation',
-  createdAt: new Date(),
-  updatedAt: new Date(),
-  messageCount: 0,
-  retrievalMode: 'hybrid',
-  messages: []
-};
+    id: id,
+    title: 'Conversation',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    messageCount: 0,
+    retrievalMode: 'hybrid',
+    messages: []
+  };
+}
 
 export async function deleteConversation():
 Promise<void> {
