@@ -23,7 +23,7 @@ print("INDEX_NAME:", os.getenv("INDEX_NAME"))
 # FASTAPI INIT
 # ─────────────────────────────────────────────
 app = FastAPI(
-    title="FP&A RAG API",
+    title="Financial Intelligence RAG API",
     version="1.0.0"
 )
 
@@ -31,8 +31,13 @@ app = FastAPI(
 # CORS
 # ─────────────────────────────────────────────
 ALLOWED_ORIGINS = [
+
+    # Local Development
     "http://localhost:5173",
     "http://127.0.0.1:5173",
+
+    # Production Frontend
+    "https://financial-intelligence-rag.onrender.com",
 ]
 
 app.add_middleware(
@@ -60,7 +65,6 @@ STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 ASSETS_DIR = os.path.join(STATIC_DIR, "assets")
 
-# Mount React assets
 if os.path.exists(ASSETS_DIR):
 
     app.mount(
@@ -73,7 +77,6 @@ if os.path.exists(ASSETS_DIR):
 # HEALTH CHECK
 # ─────────────────────────────────────────────
 @app.get("/health")
-
 async def health_check():
 
     return {
@@ -84,7 +87,6 @@ async def health_check():
 # FRONTEND SERVING
 # ─────────────────────────────────────────────
 @app.get("/{full_path:path}")
-
 async def serve_frontend(full_path: str):
 
     index_path = os.path.join(STATIC_DIR, "index.html")
