@@ -17,10 +17,10 @@ interface ChatPanelProps {
 }
 
 const STARTER_PROMPTS = [
-  'Summarize the escalation clauses in the active contracts',
-  'What are the penalty terms for late delivery across procurement agreements?',
-  'Identify force majeure provisions and their applicability thresholds',
-  'Compare termination rights across the uploaded operational documents',
+  'What are the company’s primary revenue drivers?',
+  'What risks could impact future business growth?',
+  'What did management say about future AI demand?',
+  'Summarize the long-term AI strategy from the documents.',
 ];
 
 export function ChatPanel({
