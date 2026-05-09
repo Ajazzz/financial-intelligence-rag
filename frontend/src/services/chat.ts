@@ -1,5 +1,10 @@
 import request from './api';
-import type { ChatRequest, ChatResponse } from '../types';
+
+import type {
+  ChatRequest,
+  ChatResponse,
+  Conversation
+} from '../types';
 
 export async function sendMessage(
   payload: ChatRequest
@@ -19,13 +24,17 @@ export async function sendMessage(
 export async function streamMessage(
   payload: ChatRequest,
   onChunk: (text: string) => void,
-  onDone: (meta: Omit<ChatResponse, 'answer'>) => void,
+  onDone: (
+    meta: Omit<ChatResponse, 'answer'>
+  ) => void,
   signal?: AbortSignal
 ): Promise<void> {
 
   const API_URL =
     import.meta.env.VITE_API_URL ??
     'http://localhost:8000';
+
+  const startTime = Date.now();
 
   const res = await fetch(
     `${API_URL}/api/query`,
@@ -54,15 +63,57 @@ export async function streamMessage(
   const answer =
     data.answer ??
     data.response ??
-    JSON.stringify(data);
+    '';
 
   onChunk(answer);
 
   onDone({
+    latencyMs:
+      Date.now() - startTime,
+
     tokensUsed: 0,
-    sources: data.sources ?? [],
+
+    sources:
+      data.sources ?? [],
+
     confidenceScore: 1,
-    retrievalDebug: data.retrieval_debug ?? {},
-    queryAnalysis: data.query_analysis ?? {},
+
+    retrievalDebug:
+      data.retrieval_debug ?? {},
+
+    queryAnalysis:
+      data.query_analysis ?? {},
   });
+}
+
+//
+// KEEP THESE FOR EXISTING UI
+//
+
+export async function listConversations():
+Promise<Conversation[]> {
+
+  return [];
+}
+
+export async function getConversation(
+  id: string
+): Promise<
+  Conversation & { messages: unknown[] }
+> {
+
+  return {
+    id,
+    title: 'Conversation',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    messages: []
+  };
+}
+
+export async function deleteConversation(
+  id: string
+): Promise<void> {
+
+  return;
 }
