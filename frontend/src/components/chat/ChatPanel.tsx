@@ -54,7 +54,7 @@ export function ChatPanel({
       <div className="flex items-center justify-between px-6 py-3 border-b border-slate-800 shrink-0">
         <div className="flex items-center gap-2">
           <Brain size={15} className="text-emerald-400" />
-          <span className="text-sm font-semibold text-slate-200">Contract Intelligence AI</span>
+          <span className="text-sm font-semibold text-slate-200">Financial Intelligence RAG</span>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-xs font-mono text-slate-500 uppercase tracking-wider">
