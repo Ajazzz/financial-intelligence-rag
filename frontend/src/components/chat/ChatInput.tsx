@@ -35,7 +35,7 @@ export function ChatInput({ value, onChange, onSubmit, onAbort, isStreaming, dis
         onChange={e => onChange(e.target.value)}
         onKeyDown={handleKey}
         disabled={disabled || isStreaming}
-        placeholder="Ask about contracts, clauses, escalation terms, procurement obligations…"
+        placeholder="Ask about revenue drivers, business risks, AI strategy, earnings commentary, or financial performance…"
         rows={1}
         className="flex-1 bg-transparent resize-none text-sm text-slate-100 placeholder:text-slate-600 focus:outline-none leading-relaxed disabled:opacity-50"
       />
