@@ -103,17 +103,17 @@ export async function getConversation(
 > {
 
   return {
-    id,
-    title: 'Conversation',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    messages: []
-  };
-}
+  id: 'temp',
+  title: 'Conversation',
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  messageCount: 0,
+  retrievalMode: 'hybrid',
+  messages: []
+};
 
-export async function deleteConversation(
-  id: string
-): Promise<void> {
+export async function deleteConversation():
+Promise<void> {
 
   return;
 }
